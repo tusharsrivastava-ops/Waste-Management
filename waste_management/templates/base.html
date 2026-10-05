@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}CleanCity{% endblock %}</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<style>
+:root{--dg:#0b3d20;--g:#1f8a3b;--lime:#8cc63f;--or:#f47b20;--lg:#f3f6f4}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--lg);color:#1c2b22}
+.navbar{background:var(--dg)}.navbar .nav-link{color:#e6f2e9!important;font-weight:500}.navbar .nav-link:hover{color:var(--lime)!important}
+.brand{font-weight:800;font-size:1.5rem;color:#fff}.brand i{color:var(--lime)}
+.btn-lime{background:var(--lime);color:#0b3d20;font-weight:700;border-radius:50px;padding:.6rem 1.6rem}.btn-lime:hover{background:#a0d655}
+.btn-or{background:var(--or);color:#fff;font-weight:700;border-radius:50px;padding:.6rem 1.6rem}.btn-or:hover{background:#d96a15;color:#fff}
+.hero{background:linear-gradient(120deg,#062a15,#0b3d20 55%,#1f8a3b);color:#fff;padding:90px 0;position:relative;overflow:hidden}
+.hero h1{font-weight:800;font-size:2.8rem}.hero h1 span{color:var(--lime)}
+.badge-demo{width:150px;height:150px;border-radius:50%;background:var(--or);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;margin:auto;box-shadow:0 10px 30px #0006}
+.badge-demo b{font-size:2.6rem}
+.cardx{background:#fff;border:0;border-radius:16px;box-shadow:0 4px 18px #0b3d2014;transition:.25s}.cardx:hover{transform:translateY(-5px);box-shadow:0 10px 26px #0b3d2026}
+.ico{width:60px;height:60px;border-radius:14px;background:var(--dg);color:var(--lime);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:12px}
+.stat{background:var(--dg);color:#fff;border-radius:16px;padding:22px;text-align:center}.stat h3{color:var(--lime);font-weight:800}
+.sec{padding:70px 0}.sec h2{font-weight:800;color:var(--dg)}.sec h2:after{content:"";display:block;width:60px;height:4px;background:var(--lime);margin-top:8px}.text-center h2:after{margin:8px auto 0}
+footer{background:#062a15;color:#bcd5c3;padding:40px 0}
+.auth{min-height:85vh;display:flex;align-items:center;background:linear-gradient(120deg,#062a15,#1f8a3b)}
+.stc{border-radius:14px;padding:18px;color:#fff;background:linear-gradient(135deg,var(--dg),var(--g))}.stc h3{font-weight:800;margin:0}
+.stc.o{background:linear-gradient(135deg,#d96a15,var(--or))}
+.b-Pending{background:#6c757d}.b-Assigned{background:#0d6efd}.b-In{background:#f47b20}.b-Collected{background:#6f42c1}.b-Completed{background:#1f8a3b}.b-Rejected{background:#dc3545}
+.toast-container{z-index:2000}.table thead{background:var(--dg);color:#fff}
+.spin{position:fixed;inset:0;background:#fff;z-index:3000;display:flex;align-items:center;justify-content:center;transition:opacity .4s}
+</style></head><body>
+<div class="spin" id="spin"><div class="spinner-border text-success" style="width:3rem;height:3rem"></div></div>
+<nav class="navbar navbar-expand-lg sticky-top"><div class="container">
+<a class="navbar-brand brand" href="{{ url_for('index') }}"><i class="fa-solid fa-recycle"></i> CleanCity</a>
+<button class="navbar-toggler bg-light" data-bs-toggle="collapse" data-bs-target="#nv"><span class="navbar-toggler-icon"></span></button>
+<div class="collapse navbar-collapse" id="nv"><ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+<li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#home">Home</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#about">About</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#services">Services</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#categories">Waste Categories</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#contact">Contact</a></li>
+{% if me %}<li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}"><i class="fa fa-gauge"></i> Dashboard</a></li>
+<li class="nav-item"><a class="btn btn-or btn-sm" href="{{ url_for('logout') }}">Logout</a></li>
+{% else %}<li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+<li class="nav-item"><a class="btn btn-lime btn-sm" href="{{ url_for('register') }}">Register</a></li>{% endif %}
+</ul></div></div></nav>
+<div class="toast-container position-fixed top-0 end-0 p-3">
+{% with m = get_flashed_messages(with_categories=true) %}{% for c, t in m %}
+<div class="toast align-items-center text-bg-{{ c }} border-0 show"><div class="d-flex"><div class="toast-body">{{ t }}</div><button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div>
+{% endfor %}{% endwith %}</div>
+{% block content %}{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>window.addEventListener('load',()=>{const s=document.getElementById('spin');s.style.opacity=0;setTimeout(()=>s.remove(),400)});
+document.querySelectorAll('.toast').forEach(t=>setTimeout(()=>t.remove(),5000));</script>
+{% block scripts %}{% endblock %}</body></html>
